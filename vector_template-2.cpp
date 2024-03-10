@@ -18,6 +18,9 @@ template <typename T> class Item{
 template<typename T> class Inventory {
     public:
         // Write Your code 
+        Inventory() {
+           std::vector<T> inventory = items;
+        }
         std::vector<T> items;
         void addNewItem(T added_item) {
             for (T new_item : items) {
@@ -94,6 +97,10 @@ template<typename T>class Appointment{
 template<typename T>class AppointmentSystem{
         public:
         // Write Your code 
+        AppointmentSystem(){
+            std::vector<T> appointment_system = ap;
+        }
+        std::vector<T> ap;
         void display(){
             std::cout<<"-------Appointments-------"<<std::endl;
             std::cout<<std::left<<std::setw(20)<<"Name"<<std::setw(15)<<"Date"<<std::setw(15)<<"Time"<<std::setw(15)<<"CWID"<<std::endl;
