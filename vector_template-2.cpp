@@ -18,9 +18,9 @@ template <typename T> class Item{
 template<typename T> class Inventory {
     public:
         // Write Your code 
-        std::vector<Item> items;
-        void addNewItem(Item added_item) {
-            for (Item new_item : items) {
+        std::vector<T> items;
+        void addNewItem(T added_item) {
+            for (T new_item : items) {
                 if(new_item == added_item) {
                     std::cout << "Item is already present in inventory" << std::endl;
                 }
@@ -30,13 +30,46 @@ template<typename T> class Inventory {
             }
         } 
         void increaseQuantity(T itemname, int quantity) {
-            for (T Update : items) {
+            for (T update : items) {
                 if(update.contains(itemname)) {
-                    update.quantity() = q + quantity;
+                    items.push_back(quantity);
+                }
+            }
+        } 
+        void updateItem(T itemname, T expiration, T quantity, T category) {
+            for (T search : items) {
+                if(search.contains(itemname)) {
+                    items.push_back(expiration);
+                    items.push_back(quantity);
+                    items.push_back(category);
+                }
+                else {
+                    std::cout << "item not found" << std::endl;
                 }
             }
         }
-
+        void removeItem(T itemname) {
+            for (T search : items) {
+                if (search.contain(itemname)) {
+                    items.erase(search);
+                }
+                else {
+                    std::cout << "Item not found" << std::endl;
+                }
+            }
+        }
+        int Total() {
+            int total = items.size();
+            return total;
+        }
+        T searchItem(T itemname) {
+            for (T search : items) {
+                if(!search.contains(itemname)) {
+                    std::cout << "Item not found!!" << std::endl;
+                }
+                return search;
+            }
+        }
         void displayItems(){
             std::cout<<"-------Inventory-------"<<std::endl;
             std::cout<<std::left<<std::setw(20)<<"Name"<<std::setw(15)<<"Expiration"<<std::setw(15)<<"Quantity"<<std::setw(10)<<"Category"<<std::endl;
