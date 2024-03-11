@@ -101,6 +101,17 @@ template<typename T>class AppointmentSystem{
             std::vector<T> appointment_system = ap;
         }
         std::vector<T> ap;
+        void schedule(T cwid) {
+            for(T cwid_search : ap) {
+                if(cwid_search.contains(cwid)) {
+                    std::cout << "You have already scheduled an appointment!!!" << std::endl;
+                }
+                ap.push_back(cwid);
+            }
+        }
+        // int Total_appointments(T date, T time) { <---- FINISH
+
+        // }
         void display(){
             std::cout<<"-------Appointments-------"<<std::endl;
             std::cout<<std::left<<std::setw(20)<<"Name"<<std::setw(15)<<"Date"<<std::setw(15)<<"Time"<<std::setw(15)<<"CWID"<<std::endl;
