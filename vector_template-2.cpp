@@ -2,6 +2,7 @@
 #include<string>
 #include<vector>
 #include <iomanip>
+#include <algorithm>
 template <typename T> class Item{
     public:
         T name;
@@ -34,17 +35,19 @@ template<typename T> class Inventory {
         } 
         void increaseQuantity(T itemname, int quantity) {
             for (T update : items) {
-                if(update.contains(itemname)) {
+                if(update.count(itemname) > 0) {
                     items.push_back(quantity);
                 }
             }
         } 
         void updateItem(T itemname, T expiration, T quantity, T category) {
             for (T search : items) {
-                if(search.contains(itemname)) {
-                    items.push_back(expiration);
-                    items.push_back(quantity);
-                    items.push_back(category);
+                if(search.count(itemname) > 0) {
+                    // items.push_back(expiration);
+                    // items.push_back(quantity);
+                    // items.push_back(category);
+                    T updated_item{itemname, expiration, quantity, category};
+                    items.push_back(updated_item); //<-- UNSURE IF GOOD
                 }
                 else {
                     std::cout << "item not found" << std::endl;
@@ -52,13 +55,14 @@ template<typename T> class Inventory {
             }
         }
         void removeItem(T itemname) {
-            for (T search : items) {
-                if (search.contain(itemname)) {
-                    items.erase(search);
+            // for (T search : items) {
+                typename std::vector<T>::iterator it = std::find(items.begin(), items.end(), itemname);
+                if (it != items.end()) {
+                    items.erase(*it);
                 }
                 else {
                     std::cout << "Item not found" << std::endl;
-                }
+                // }
             }
         }
         int Total() {
@@ -66,13 +70,13 @@ template<typename T> class Inventory {
             return total;
         }
         T searchItem(T itemname) {
-            for (T search : items) {
-                if(!search.contains(itemname)) {
-                    std::cout << "Item not found!!" << std::endl;
+            typename std::vector<T>::iterator it = std::find(items.begin(), items.end(), itemname);
+                if (it != items.end()) {
+                    return *it;
                 }
-                return search;
-            }
-        }
+                std::cout << "Item not found!!" << std::endl;
+            } // USE FIND FOR THE OTHER FOR LOOPS
+        
         void displayItems(){
             std::cout<<"-------Inventory-------"<<std::endl;
             std::cout<<std::left<<std::setw(20)<<"Name"<<std::setw(15)<<"Expiration"<<std::setw(15)<<"Quantity"<<std::setw(10)<<"Category"<<std::endl;
@@ -103,15 +107,24 @@ template<typename T>class AppointmentSystem{
         std::vector<T> ap;
         void schedule(T cwid) {
             for(T cwid_search : ap) {
-                if(cwid_search.contains(cwid)) {
+                if(cwid_search.count(cwid) > 0) {
                     std::cout << "You have already scheduled an appointment!!!" << std::endl;
                 }
                 ap.push_back(cwid);
             }
         }
-        // int Total_appointments(T date, T time) { <---- FINISH
-
-        // }
+        int Total_appointments(T date, T time) {
+            int app_count = 0;
+            for(T app : ap) {
+                if(app.count(date) > 0 && app.count(time) > 0) {
+                app_count++; 
+                }
+            }
+            return app_count;
+        }
+        void removeRecent() {
+            ap.pop_back();
+        }
         void display(){
             std::cout<<"-------Appointments-------"<<std::endl;
             std::cout<<std::left<<std::setw(20)<<"Name"<<std::setw(15)<<"Date"<<std::setw(15)<<"Time"<<std::setw(15)<<"CWID"<<std::endl;
@@ -121,7 +134,7 @@ template<typename T>class AppointmentSystem{
         }
 };
 int main(){
-    /* Remove comments and run following test cases
+    // Remove comments and run following test cases
     Inventory<std::string> i1;
     Item<std::string> I1("Protien Bar","05/09/2023","Snacks",4);
     i1.addNewItem(I1);
@@ -177,5 +190,5 @@ int main(){
     Appointment<std::string> a5("Chris Lynn","09/12/2023","12:00PM","879455714");
     s1.schedule(a4);
     s1.removeRecent();
-    s1.display();*/
+    s1.display();
 }
