@@ -60,44 +60,57 @@ class Inventory {
       }
     }
   }
-  void updateItem(T itemname, T expiration, T category, int quantity) {
+  bool updateItem(T itemname, T expiration, T category, int quantity) {
+    bool found = false;
     for (int i = 0; i < items.size(); i++) {
       if (items[i].name == itemname) {
         items[i].expiration = expiration;
         items[i].category = category;
         items[i].quantity = quantity;
+        found = true;
+        return true;
       }
       // else {
       //     std::cout << "item not found" << std::endl;
       // }
-      if (items[i].name != itemname && i == items.size()) {
-        throw std::invalid_argument("item not found");
-        // std::cout << "item not found" << std::endl;
-      }
+      // if (items[i].name != itemname && i == items.size()-1) {
+      //   throw std::invalid_argument("item not found");
+      //   // std::cout << "item not found" << std::endl;
+      // }
     }
+          if(found == false) {
+            std::string msg = "item not found";
+        std::cout << msg << std::endl;
+      }
+      return found;
   }
-  void removeItem(T itemname) {
+  bool removeItem(T itemname) {
+    bool found = false;
     for (int i = 0; i < items.size(); i++) {
       if (items[i].name == itemname) {
         items.erase(items.begin() + i);
+        found = true;
+        return found;
       }
       //     else {
       //         std::cout << "Item not found" << std::endl;
 
       // }
-      if (items[i].name != itemname && i == items.size()) {
-        throw std::invalid_argument("Item not found");
-        // std::cout << "Item not found" << std::endl;
-      }
     }
+          if (found == false) {
+        
+        std::cout << "Item not found" << std::endl;
+      }
+      return found;
   }
   int Total() {
     int total = items.size();
     std::cout << "Total Number of items in inventory = " << total << std::endl;
     return total;
   }
-  void searchItem(T itemname) {
+  bool searchItem(T itemname) {
     //    Item<std::string> found_item(itemname, "0", "0", 0);
+    bool found = false;
     for (int i = 0; i < items.size(); i++) {
       if (items[i].name == itemname) {
         std::cout << "Query for " << items[i].name << std::endl
@@ -105,12 +118,14 @@ class Inventory {
                   << "Expiration Date = " << items[i].expiration << std::endl
                   << "category = " << items[i].category << std::endl
                   << "quantity = " << items[i].quantity << std::endl;
-      }
-      if (items[i].name != itemname && i == items.size()) {
-        throw std::invalid_argument("Item not found!!");
-        // std::cout << "Item not found!!" << std::endl;
+                  found = true;
       }
     }
+          if (found == false) {
+        std::string msg ="Item not found!!";
+        // std::cout << "Item not found!!" << std::endl;
+      }
+      return found;
     // return found_item;
   }
   void displayItems() {
