@@ -1,14 +1,14 @@
 // Name: Kevin Henderson
-//CWID: 885395855
-// Git repository Link: https://github.com/KevinHendersonCSUF/Vector-Project-CPSC-131.git
+// CWID: 885395855
+// Git repository Link:
+// https://github.com/KevinHendersonCSUF/Vector-Project-CPSC-131.git
 #include <iomanip>
 #include <iostream>
 #include <string>
 #include <vector>
 
-template <typename T>
-class Item {
- public:
+template <typename T> class Item {
+public:
   T name;
   T expiration;
   T category;
@@ -19,34 +19,12 @@ class Item {
     category = c;
     quantity = q;
   }
-  // void SetQuantity(int quan) {quantity = quan;} //ADDED THIS IN SO I CAN SET
-  // THE QUANTITY FOR INCREASE QUANTITY FUNCTION void SetExpiration(T exp)
-  // {expiration = exp;} void SetCatagory(T cat) {category = cat;} T GetName()
-  // {return name;} int GetQuantity() {return quantity;}
 };
-template <typename T>
-class Inventory {
- public:
+template <typename T> class Inventory {
+public:
   // Write Your code
-  // Inventory() {
-  //    std::vector<Item<std::string>> inventory = items;
-  // }
   std::vector<Item<std::string>> items;
   void addNewItem(Item<std::string> added_item) {
-    // for (Item<std::string> new_item : items) {
-    //     if(new_item == added_item) {
-    //         std::cout << "Item is already present in inventory" << std::endl;
-    //     }
-    //     else {
-    //         items.push_back(added_item);
-    //     } <-- CAUSING INVALID OPERANDS TO BINARY EXPRESSION COMPILE ERROR,
-    //     TRYING STD::FIND, REVISIT RANGED FOR LOOP IF IT DOESNT WORK OUT
-
-    // std::vector<Item<std::string>>::iterator it = std::find(items.begin(),
-    // items.end(), added_item); if(it != items.end()) {
-    //     std::cout << "Item is already present in inventory" << std::endl;
-    // }
-    // items.push_back(added_item); //CAUSING ISSUES
     for (int i = 0; i < items.size(); i++) {
       if (added_item.name == items[i].name) {
         std::cout << "Item is already present in inventory" << std::endl;
@@ -59,7 +37,6 @@ class Inventory {
     for (int i = 0; i < items.size(); i++) {
       if (items[i].name == itemname) {
         items[i].quantity = items[i].quantity + quantity;
-        // items[i].SetQuantity(new_quantity);
       }
     }
   }
@@ -73,19 +50,12 @@ class Inventory {
         found = true;
         return true;
       }
-      // else {
-      //     std::cout << "item not found" << std::endl;
-      // }
-      // if (items[i].name != itemname && i == items.size()-1) {
-      //   throw std::invalid_argument("item not found");
-      //   // std::cout << "item not found" << std::endl;
-      // }
     }
-          if(found == false) {
-            std::string msg = "item not found";
-        std::cout << msg << std::endl;
-      }
-      return found;
+    if (found == false) {
+      std::string msg = "item not found";
+      std::cout << msg << std::endl;
+    }
+    return found;
   }
   bool removeItem(T itemname) {
     bool found = false;
@@ -95,16 +65,12 @@ class Inventory {
         found = true;
         return found;
       }
-      //     else {
-      //         std::cout << "Item not found" << std::endl;
-
-      // }
     }
-          if (found == false) {
-        
-        std::cout << "Item not found" << std::endl;
-      }
-      return found;
+    if (found == false) {
+
+      std::cout << "Item not found" << std::endl;
+    }
+    return found;
   }
   int Total() {
     int total = items.size();
@@ -112,7 +78,6 @@ class Inventory {
     return total;
   }
   bool searchItem(T itemname) {
-    //    Item<std::string> found_item(itemname, "0", "0", 0);
     bool found = false;
     for (int i = 0; i < items.size(); i++) {
       if (items[i].name == itemname) {
@@ -121,15 +86,13 @@ class Inventory {
                   << "Expiration Date = " << items[i].expiration << std::endl
                   << "category = " << items[i].category << std::endl
                   << "quantity = " << items[i].quantity << std::endl;
-                  found = true;
+        found = true;
       }
     }
-          if (found == false) {
-        std::string msg ="Item not found!!";
-        // std::cout << "Item not found!!" << std::endl;
-      }
-      return found;
-    // return found_item;
+    if (found == false) {
+      std::string msg = "Item not found!!";
+    }
+    return found;
   }
   void displayItems() {
     std::cout << "-------Inventory-------" << std::endl;
@@ -143,9 +106,8 @@ class Inventory {
     }
   }
 };
-template <typename T>
-class Appointment {
- public:
+template <typename T> class Appointment {
+public:
   T c_name;
   T ap_date;
   T ap_time;
@@ -156,17 +118,10 @@ class Appointment {
     ap_time = t;
     CWID = cw;
   }
-  // T GetCWID() {return CWID;}
-  // T GetDate() {return ap_date;}
-  // T GetTime() {return ap_time;}
 };
-template <typename T>
-class AppointmentSystem {
- public:
+template <typename T> class AppointmentSystem {
+public:
   // Write Your code
-  // AppointmentSystem(){
-  //     std::vector<Appointment<std::string>> appointment_system = ap;
-  // }
   std::vector<Appointment<std::string>> ap;
   void schedule(Appointment<std::string> app) {
     for (int i = 0; i < ap.size(); i++) {
