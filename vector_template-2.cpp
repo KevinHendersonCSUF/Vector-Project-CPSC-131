@@ -1,3 +1,6 @@
+// Name: Kevin Henderson
+//CWID: 885395855
+
 #include <iomanip>
 #include <iostream>
 #include <string>
