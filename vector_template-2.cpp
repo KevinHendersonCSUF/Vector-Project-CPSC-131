@@ -68,8 +68,9 @@ template<typename T> class Inventory {
                 // else {
                 //     std::cout << "item not found" << std::endl;
                 // }
-                if(items[i].name != itemname && i == items.size()-1){
-                    std::cout << "item not found" << std::endl;
+                if(items[i].name != itemname && i == items.size()){
+                    throw std::invalid_argument("item not found");
+                    //std::cout << "item not found" << std::endl;
                 }
             }
         }
@@ -82,13 +83,15 @@ template<typename T> class Inventory {
             //         std::cout << "Item not found" << std::endl;
                 
             // }
-                if(items[i].name != itemname && i == items.size()-1){
-                    std::cout << "Item not found" << std::endl;
+                if(items[i].name != itemname && i == items.size()){
+                    throw std::invalid_argument("Item not found");
+                    //std::cout << "Item not found" << std::endl;
                 }
             }
         }
         int Total() {
             int total = items.size();
+            std::cout << "Total Number of items in inventory = " << total << std::endl;
             return total;
         }
         void searchItem(T itemname) {
@@ -99,8 +102,9 @@ template<typename T> class Inventory {
                               << "Expiration Date = " << items[i].expiration << std::endl << "category = " << items[i].category
                               << std::endl << "quantity = " << items[i].quantity << std::endl;
                 }
-                if(items[i].name != itemname && i == items.size()-1){
-                    std::cout << "Item not found!!" << std::endl;
+                if (items[i].name != itemname && i == items.size()){
+                    throw std::invalid_argument("Item not found!!");
+                    //std::cout << "Item not found!!" << std::endl;
                 }
             }
             // return found_item;
@@ -137,36 +141,22 @@ template<typename T>class AppointmentSystem{
         // }
         std::vector<Appointment<std::string>> ap;
         void schedule(Appointment<std::string> app) {
-            // std::vector<Appointment<std::string>>::iterator it = std::find(ap.begin(), ap.end(), cwid);
-            //     if (it != ap.end()) {
-            //         std::cout << "You have already scheduled an appointment!!!" << std::endl;
-            //     }
-            //     ap.push_back(cwid); //CAUSING ISSUES
             for(int i = 0; i < ap.size(); i++){
                 if(ap[i].CWID == app.CWID) {
                     std::cout << "You have already scheduled an appointment!!!" << std::endl;
                 }
-                ap.push_back(app);
             }
+            ap.push_back(app);
         }
         int Total_appointments(T date, T time) {
             int app_count = 0;
-            // std::vector<Appointment<std::string>>::iterator it_date = std::find(ap.begin(), ap.end(), date);
-            // std::vector<Appointment<std::string>>::iterator it_time = std::find(ap.begin(), ap.end(), time);
-            //     if (it_date != ap.end()) {
-            //     // app_count++; 
-            //     if (it_time != ap.end()) {
-            //         app_count++;
-            //     }
-            //     }
-            
-            // return app_count; //CAUSING ISSUES
             for(int i = 0; i < ap.size(); i++){
                 if(ap[i].ap_date == date && ap[i].ap_time == time) {
                    app_count++;
                 }
                 
             }
+            std::cout << "Total Appointments = " << app_count << std::endl;
             return app_count;
         }
         void removeRecent() {
@@ -238,4 +228,5 @@ int main(){
     s1.schedule(a4);
     s1.removeRecent();
     s1.display();
+    return 0;
 }
