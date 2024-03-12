@@ -14,18 +14,18 @@ template <typename T> class Item{
             category = c;
             quantity = q;
         }
-        void SetQuantity(int quan) {quantity = quan;} //ADDED THIS IN SO I CAN SET THE QUANTITY FOR INCREASE QUANTITY FUNCTION, ONLY WAY I COULD THINK OF
-        void SetExpiration(T exp) {expiration = exp;}
-        void SetCatagory(T cat) {category = cat;}
-        T GetName() {return name;}
-        int GetQuantity() {return quantity;}
+        // void SetQuantity(int quan) {quantity = quan;} //ADDED THIS IN SO I CAN SET THE QUANTITY FOR INCREASE QUANTITY FUNCTION
+        // void SetExpiration(T exp) {expiration = exp;}
+        // void SetCatagory(T cat) {category = cat;}
+        // T GetName() {return name;}
+        // int GetQuantity() {return quantity;}
 };
 template<typename T> class Inventory {
     public:
         // Write Your code 
-        Inventory() {
-           std::vector<Item<std::string>> inventory = items;
-        }
+        // Inventory() {
+        //    std::vector<Item<std::string>> inventory = items;
+        // }
         std::vector<Item<std::string>> items;
         void addNewItem(Item<std::string> added_item) {
             // for (Item<std::string> new_item : items) {
@@ -42,71 +42,68 @@ template<typename T> class Inventory {
             // }
             // items.push_back(added_item); //CAUSING ISSUES
             for (int i = 0; i < items.size(); i++) {
-                if (added_item.GetName() == items[i].GetName()) {
+                if (added_item.name == items[i].name) {
                     std::cout << "Item is already present in inventory" << std::endl;
                 }
-                items.push_back(added_item);
             }
+            items.push_back(added_item);
             }
          
         void increaseQuantity(T itemname, int quantity) {
-            //  std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), itemname);
-            //     if (it != items.end()) {
-            //         it->SetQuantity(quantity);
-            //     }
             for(int i = 0; i < items.size(); i++) {
-                if(items[i].GetName() == itemname) {
-                    int new_quantity = items[i].GetQuantity() + quantity;
-                    items[i].SetQuantity(new_quantity);
+                if(items[i].name == itemname) {
+                    items[i].quantity = items[i].quantity + quantity;
+                    // items[i].SetQuantity(new_quantity);
                 }
             
         } 
         }
         void updateItem(T itemname, T expiration, T category, int quantity)  {
             for(int i = 0; i < items.size(); i++) {
-                if(items[i].GetName() == itemname) {
-                items[i].SetExpiration(expiration);
-                items[i].SetCatagory(category);
-                items[i].SetQuantity(quantity);
+                if(items[i].name == itemname) {
+                items[i].expiration = expiration;
+                items[i].category = category;
+                items[i].quantity = quantity;
                 }
-                else {
+                // else {
+                //     std::cout << "item not found" << std::endl;
+                // }
+                if(items[i].name != itemname && i == items.size()-1){
                     std::cout << "item not found" << std::endl;
                 }
             }
         }
         void removeItem(T itemname) {
-            //   std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), itemname);
-            //     if (it != items.end()) {
-            //         items.erase(it);
-            //     }
             for(int i = 0; i < items.size(); i++) {
-                if(items[i].GetName() == itemname) {
+                if(items[i].name == itemname) {
                     items.erase(items.begin()+i);
                 }
-                else {
-                    std::cout << "Item not found" << std::endl;
+            //     else {
+            //         std::cout << "Item not found" << std::endl;
                 
-            }
+            // }
+                if(items[i].name != itemname && i == items.size()-1){
+                    std::cout << "Item not found" << std::endl;
+                }
             }
         }
         int Total() {
             int total = items.size();
             return total;
         }
-        Item<std::string> searchItem(T itemname) {
-            // std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), itemname);
-            //     if (it == items.end()) {
-            //         std::cout << "Item not found!!" << std::endl;
-            //     }
-            //     return *it;
-           Item<std::string> found_item(itemname, "0", "0", 0);
+        void searchItem(T itemname) {
+        //    Item<std::string> found_item(itemname, "0", "0", 0);
             for(int i = 0; i < items.size(); i++) {
-                if(items[i].GetName() == itemname) {
-                    found_item = items.at(i);
+                if(items[i].name == itemname) {
+                    std::cout << "Query for " << items[i].name << std::endl << "Item = "<< items[i].name << std::endl
+                              << "Expiration Date = " << items[i].expiration << std::endl << "category = " << items[i].category
+                              << std::endl << "quantity = " << items[i].quantity << std::endl;
+                }
+                if(items[i].name != itemname && i == items.size()-1){
+                    std::cout << "Item not found!!" << std::endl;
                 }
             }
-            std::cout << "Item not found!!" << std::endl;
-            return found_item;
+            // return found_item;
         }
         void displayItems(){
             std::cout<<"-------Inventory-------"<<std::endl;
@@ -128,16 +125,16 @@ template<typename T>class Appointment{
             ap_time = t;
             CWID = cw; 
         }
-        T GetCWID() {return CWID;}
-        T GetDate() {return ap_date;}
-        T GetTime() {return ap_time;}
+        // T GetCWID() {return CWID;}
+        // T GetDate() {return ap_date;}
+        // T GetTime() {return ap_time;}
 };
 template<typename T>class AppointmentSystem{
         public:
         // Write Your code 
-        AppointmentSystem(){
-            std::vector<Appointment<std::string>> appointment_system = ap;
-        }
+        // AppointmentSystem(){
+        //     std::vector<Appointment<std::string>> appointment_system = ap;
+        // }
         std::vector<Appointment<std::string>> ap;
         void schedule(Appointment<std::string> app) {
             // std::vector<Appointment<std::string>>::iterator it = std::find(ap.begin(), ap.end(), cwid);
@@ -146,7 +143,7 @@ template<typename T>class AppointmentSystem{
             //     }
             //     ap.push_back(cwid); //CAUSING ISSUES
             for(int i = 0; i < ap.size(); i++){
-                if(ap[i].GetCWID() == app.GetCWID()) {
+                if(ap[i].CWID == app.CWID) {
                     std::cout << "You have already scheduled an appointment!!!" << std::endl;
                 }
                 ap.push_back(app);
@@ -165,7 +162,7 @@ template<typename T>class AppointmentSystem{
             
             // return app_count; //CAUSING ISSUES
             for(int i = 0; i < ap.size(); i++){
-                if(ap[i].GetDate() == date && ap[i].GetTime() == time) {
+                if(ap[i].ap_date == date && ap[i].ap_time == time) {
                    app_count++;
                 }
                 
@@ -241,5 +238,4 @@ int main(){
     s1.schedule(a4);
     s1.removeRecent();
     s1.display();
-    return 0;
 }
