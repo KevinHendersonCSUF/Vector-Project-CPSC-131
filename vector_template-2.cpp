@@ -34,15 +34,15 @@ template<typename T> class Inventory {
             }
         } 
         void increaseQuantity(T itemname, int quantity) {
-            for (T update : items) {
-                if(update.count(itemname) > 0) {
-                    items.push_back(quantity);
+            typename std::vector<T>::iterator it = std::find(items.begin(), items.end(), itemname);
+                if (it != items.end()) {
+                    items[it].push_back(quantity);
                 }
-            }
+            
         } 
-        void updateItem(T itemname, T expiration, T quantity, T category) {
-            for (T search : items) {
-                if(search.count(itemname) > 0) {
+        void updateItem(T itemname, T expiration, T quantity, T category)  {
+           typename std::vector<T>::iterator it = std::find(items.begin(), items.end(), itemname);
+                if (it != items.end()) {
                     // items.push_back(expiration);
                     // items.push_back(quantity);
                     // items.push_back(category);
@@ -53,7 +53,6 @@ template<typename T> class Inventory {
                     std::cout << "item not found" << std::endl;
                 }
             }
-        }
         void removeItem(T itemname) {
             // for (T search : items) {
                 typename std::vector<T>::iterator it = std::find(items.begin(), items.end(), itemname);
@@ -106,20 +105,24 @@ template<typename T>class AppointmentSystem{
         }
         std::vector<T> ap;
         void schedule(T cwid) {
-            for(T cwid_search : ap) {
-                if(cwid_search.count(cwid) > 0) {
+            typename std::vector<T>::iterator it = std::find(ap.begin(), ap.end(), cwid);
+                if (it != ap.end()) {
                     std::cout << "You have already scheduled an appointment!!!" << std::endl;
                 }
                 ap.push_back(cwid);
-            }
+            
         }
         int Total_appointments(T date, T time) {
             int app_count = 0;
-            for(T app : ap) {
-                if(app.count(date) > 0 && app.count(time) > 0) {
-                app_count++; 
+            typename std::vector<T>::iterator it_date = std::find(ap.begin(), ap.end(), date);
+            typename std::vector<T>::iterator it_time = std::find(ap.begin(), ap.end(), time);
+                if (it_date != ap.end()) {
+                // app_count++; 
+                if (it_time != ap.end()) {
+                    app_count++;
                 }
-            }
+                }
+            
             return app_count;
         }
         void removeRecent() {
