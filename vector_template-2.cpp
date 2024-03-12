@@ -20,11 +20,11 @@ template<typename T> class Inventory {
     public:
         // Write Your code 
         Inventory() {
-           std::vector<T> inventory = items;
+           std::vector<Item<std::string>> inventory = items;
         }
-        std::vector<T> items;
-        void addNewItem(T added_item) {
-            for (T new_item : items) {
+        std::vector<Item<std::string>> items;
+        void addNewItem(Item<std::string> added_item) {
+            for (Item<std::string> new_item : items) {
                 if(new_item == added_item) {
                     std::cout << "Item is already present in inventory" << std::endl;
                 }
@@ -34,47 +34,44 @@ template<typename T> class Inventory {
             }
         } 
         void increaseQuantity(T itemname, int quantity) {
-            typename std::vector<T>::iterator it = std::find(items.begin(), items.end(), itemname);
+             std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), itemname);
                 if (it != items.end()) {
-                    items[it].push_back(quantity);
+                    items.push_back(quantity); //CAUSING ERRORS BECAUSE QUANTITY IS AN INT, CANNOT PUSH BACK INTO A VECTOR OF ITEM OBJECTS, MUST BE ATTACHED TO AN ITEM OBJECT
                 }
             
         } 
-        void updateItem(T itemname, T expiration, T quantity, T category)  {
-           typename std::vector<T>::iterator it = std::find(items.begin(), items.end(), itemname);
+        void updateItem(T itemname, T expiration, T category, int quantity)  {
+            std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), itemname);
                 if (it != items.end()) {
-                    // items.push_back(expiration);
-                    // items.push_back(quantity);
-                    // items.push_back(category);
-                    T updated_item{itemname, expiration, quantity, category};
-                    items.push_back(updated_item); //<-- UNSURE IF GOOD
+                    Item<std::string> updated_item(itemname, expiration, category, quantity);
+                    items.erase(it);
+                    items.push_back(updated_item);
                 }
                 else {
                     std::cout << "item not found" << std::endl;
                 }
             }
         void removeItem(T itemname) {
-            // for (T search : items) {
-                typename std::vector<T>::iterator it = std::find(items.begin(), items.end(), itemname);
+              std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), itemname);
                 if (it != items.end()) {
-                    items.erase(*it);
+                    items.erase(it);
                 }
                 else {
                     std::cout << "Item not found" << std::endl;
-                // }
+                
             }
         }
         int Total() {
             int total = items.size();
             return total;
         }
-        T searchItem(T itemname) {
-            typename std::vector<T>::iterator it = std::find(items.begin(), items.end(), itemname);
+        Item<std::string> searchItem(T itemname) {
+            std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), itemname);
                 if (it != items.end()) {
-                    return *it;
+                    return items.at(it); //causing errors
                 }
                 std::cout << "Item not found!!" << std::endl;
-            } // USE FIND FOR THE OTHER FOR LOOPS
+            }
         
         void displayItems(){
             std::cout<<"-------Inventory-------"<<std::endl;
@@ -101,11 +98,11 @@ template<typename T>class AppointmentSystem{
         public:
         // Write Your code 
         AppointmentSystem(){
-            std::vector<T> appointment_system = ap;
+            std::vector<Appointment<std::string>> appointment_system = ap;
         }
-        std::vector<T> ap;
-        void schedule(T cwid) {
-            typename std::vector<T>::iterator it = std::find(ap.begin(), ap.end(), cwid);
+        std::vector<Appointment<std::string>> ap;
+        void schedule(Appointment<std::string> cwid) {
+            typename std::vector<Appointment<std::string>>::iterator it = std::find(ap.begin(), ap.end(), cwid);
                 if (it != ap.end()) {
                     std::cout << "You have already scheduled an appointment!!!" << std::endl;
                 }
@@ -114,8 +111,8 @@ template<typename T>class AppointmentSystem{
         }
         int Total_appointments(T date, T time) {
             int app_count = 0;
-            typename std::vector<T>::iterator it_date = std::find(ap.begin(), ap.end(), date);
-            typename std::vector<T>::iterator it_time = std::find(ap.begin(), ap.end(), time);
+            typename std::vector<Appointment<std::string>>::iterator it_date = std::find(ap.begin(), ap.end(), date);
+            typename std::vector<Appointment<std::string>>::iterator it_time = std::find(ap.begin(), ap.end(), time);
                 if (it_date != ap.end()) {
                 // app_count++; 
                 if (it_time != ap.end()) {
