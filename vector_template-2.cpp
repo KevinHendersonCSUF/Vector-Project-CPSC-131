@@ -24,13 +24,19 @@ template <typename T> class Inventory {
 public:
   // Write Your code
   std::vector<Item<std::string>> items;
-  void addNewItem(Item<std::string> added_item) {
+  bool addNewItem(Item<std::string> added_item) {
+    bool present = false;
     for (int i = 0; i < items.size(); i++) {
       if (added_item.name == items[i].name) {
         std::cout << "Item is already present in inventory" << std::endl;
+        present = true;
+        return present;
       }
     }
-    items.push_back(added_item);
+    if (present == false) {
+      items.push_back(added_item);
+    }
+    return present;
   }
 
   void increaseQuantity(T itemname, int quantity) {
