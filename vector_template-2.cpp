@@ -2,7 +2,6 @@
 #include<string>
 #include<vector>
 #include <iomanip>
-#include <algorithm>
 template <typename T> class Item{
     public:
         T name;
@@ -15,6 +14,11 @@ template <typename T> class Item{
             category = c;
             quantity = q;
         }
+        void SetQuantity(int quan) {quantity = quan;} //ADDED THIS IN SO I CAN SET THE QUANTITY FOR INCREASE QUANTITY FUNCTION, ONLY WAY I COULD THINK OF
+        void SetExpiration(T exp) {expiration = exp;}
+        void SetCatagory(T cat) {category = cat;}
+        T GetName() {return name;}
+        int GetQuantity() {return quantity;}
 };
 template<typename T> class Inventory {
     public:
@@ -24,41 +28,65 @@ template<typename T> class Inventory {
         }
         std::vector<Item<std::string>> items;
         void addNewItem(Item<std::string> added_item) {
-            for (Item<std::string> new_item : items) {
-                if(new_item == added_item) {
+            // for (Item<std::string> new_item : items) {
+            //     if(new_item == added_item) {
+            //         std::cout << "Item is already present in inventory" << std::endl;
+            //     }
+            //     else {
+            //         items.push_back(added_item);
+            //     } <-- CAUSING INVALID OPERANDS TO BINARY EXPRESSION COMPILE ERROR, TRYING STD::FIND, REVISIT RANGED FOR LOOP IF IT DOESNT WORK OUT
+           
+            // std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), added_item);
+            // if(it != items.end()) {
+            //     std::cout << "Item is already present in inventory" << std::endl;
+            // }
+            // items.push_back(added_item); //CAUSING ISSUES
+            for (int i = 0; i < items.size(); i++) {
+                if (added_item.GetName() == items[i].GetName()) {
                     std::cout << "Item is already present in inventory" << std::endl;
                 }
-                else {
-                    items.push_back(added_item);
-                }
+                items.push_back(added_item);
             }
-        } 
+            }
+         
         void increaseQuantity(T itemname, int quantity) {
-             std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), itemname);
-                if (it != items.end()) {
-                    items.push_back(quantity); //CAUSING ERRORS BECAUSE QUANTITY IS AN INT, CANNOT PUSH BACK INTO A VECTOR OF ITEM OBJECTS, MUST BE ATTACHED TO AN ITEM OBJECT
+            //  std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), itemname);
+            //     if (it != items.end()) {
+            //         it->SetQuantity(quantity);
+            //     }
+            for(int i = 0; i < items.size(); i++) {
+                if(items[i].GetName() == itemname) {
+                    int new_quantity = items[i].GetQuantity() + quantity;
+                    items[i].SetQuantity(new_quantity);
                 }
             
         } 
+        }
         void updateItem(T itemname, T expiration, T category, int quantity)  {
-            std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), itemname);
-                if (it != items.end()) {
-                    Item<std::string> updated_item(itemname, expiration, category, quantity);
-                    items.erase(it);
-                    items.push_back(updated_item);
+            for(int i = 0; i < items.size(); i++) {
+                if(items[i].GetName() == itemname) {
+                items[i].SetExpiration(expiration);
+                items[i].SetCatagory(category);
+                items[i].SetQuantity(quantity);
                 }
                 else {
                     std::cout << "item not found" << std::endl;
                 }
             }
+        }
         void removeItem(T itemname) {
-              std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), itemname);
-                if (it != items.end()) {
-                    items.erase(it);
+            //   std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), itemname);
+            //     if (it != items.end()) {
+            //         items.erase(it);
+            //     }
+            for(int i = 0; i < items.size(); i++) {
+                if(items[i].GetName() == itemname) {
+                    items.erase(items.begin()+i);
                 }
                 else {
                     std::cout << "Item not found" << std::endl;
                 
+            }
             }
         }
         int Total() {
@@ -66,13 +94,20 @@ template<typename T> class Inventory {
             return total;
         }
         Item<std::string> searchItem(T itemname) {
-            std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), itemname);
-                if (it != items.end()) {
-                    return items.at(it); //causing errors
+            // std::vector<Item<std::string>>::iterator it = std::find(items.begin(), items.end(), itemname);
+            //     if (it == items.end()) {
+            //         std::cout << "Item not found!!" << std::endl;
+            //     }
+            //     return *it;
+           Item<std::string> found_item(itemname, "0", "0", 0);
+            for(int i = 0; i < items.size(); i++) {
+                if(items[i].GetName() == itemname) {
+                    found_item = items.at(i);
                 }
-                std::cout << "Item not found!!" << std::endl;
             }
-        
+            std::cout << "Item not found!!" << std::endl;
+            return found_item;
+        }
         void displayItems(){
             std::cout<<"-------Inventory-------"<<std::endl;
             std::cout<<std::left<<std::setw(20)<<"Name"<<std::setw(15)<<"Expiration"<<std::setw(15)<<"Quantity"<<std::setw(10)<<"Category"<<std::endl;
@@ -93,6 +128,9 @@ template<typename T>class Appointment{
             ap_time = t;
             CWID = cw; 
         }
+        T GetCWID() {return CWID;}
+        T GetDate() {return ap_date;}
+        T GetTime() {return ap_time;}
 };
 template<typename T>class AppointmentSystem{
         public:
@@ -101,25 +139,37 @@ template<typename T>class AppointmentSystem{
             std::vector<Appointment<std::string>> appointment_system = ap;
         }
         std::vector<Appointment<std::string>> ap;
-        void schedule(Appointment<std::string> cwid) {
-            typename std::vector<Appointment<std::string>>::iterator it = std::find(ap.begin(), ap.end(), cwid);
-                if (it != ap.end()) {
+        void schedule(Appointment<std::string> app) {
+            // std::vector<Appointment<std::string>>::iterator it = std::find(ap.begin(), ap.end(), cwid);
+            //     if (it != ap.end()) {
+            //         std::cout << "You have already scheduled an appointment!!!" << std::endl;
+            //     }
+            //     ap.push_back(cwid); //CAUSING ISSUES
+            for(int i = 0; i < ap.size(); i++){
+                if(ap[i].GetCWID() == app.GetCWID()) {
                     std::cout << "You have already scheduled an appointment!!!" << std::endl;
                 }
-                ap.push_back(cwid);
-            
+                ap.push_back(app);
+            }
         }
         int Total_appointments(T date, T time) {
             int app_count = 0;
-            typename std::vector<Appointment<std::string>>::iterator it_date = std::find(ap.begin(), ap.end(), date);
-            typename std::vector<Appointment<std::string>>::iterator it_time = std::find(ap.begin(), ap.end(), time);
-                if (it_date != ap.end()) {
-                // app_count++; 
-                if (it_time != ap.end()) {
-                    app_count++;
-                }
-                }
+            // std::vector<Appointment<std::string>>::iterator it_date = std::find(ap.begin(), ap.end(), date);
+            // std::vector<Appointment<std::string>>::iterator it_time = std::find(ap.begin(), ap.end(), time);
+            //     if (it_date != ap.end()) {
+            //     // app_count++; 
+            //     if (it_time != ap.end()) {
+            //         app_count++;
+            //     }
+            //     }
             
+            // return app_count; //CAUSING ISSUES
+            for(int i = 0; i < ap.size(); i++){
+                if(ap[i].GetDate() == date && ap[i].GetTime() == time) {
+                   app_count++;
+                }
+                
+            }
             return app_count;
         }
         void removeRecent() {
@@ -191,4 +241,5 @@ int main(){
     s1.schedule(a4);
     s1.removeRecent();
     s1.display();
+    return 0;
 }
